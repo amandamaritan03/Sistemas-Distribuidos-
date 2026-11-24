@@ -1,0 +1,25 @@
+CHECKPOINT 1 | comunicação TCP
+OK  Saldo inicial de 10 pares
+  cliente: {"ok": true, "sku": "TENIS-42", "saldo": 10, "versao": 0, "no": "principal"}
+OK  Cliente do CP1 conectado
+OK  Dois clientes consultaram o servidor do CP1
+CHECKPOINT 2 | replicação
+  cliente: {"ok": true, "sku": "TENIS-42", "saldo": 8, "versao": 1, "no": "principal"}
+OK  Cliente do CP1 vende no CP2
+  réplica: {'ok': True, 'sku': 'TENIS-42', 'saldo': 8, 'versao': 1, 'no': 'replica'}
+OK  Réplica convergiu para 8 pares na versão 1
+CHECKPOINT 3 | falha real de processo
+  cliente: {"ok": true, "sku": "TENIS-42", "saldo": 8, "versao": 1, "no": "replica", "aviso": "Principal indisponível. Consulta da última cópia."}
+OK  Consulta desviada para a cópia
+  cliente: {"ok": false, "erro": "Principal sem resposta. Venda sem confirmação. Confira antes de repetir."}
+OK  Venda sem confirmação durante a falha
+OK  Réplica recusa escrita direta
+  cliente: {"ok": true, "sku": "TENIS-42", "saldo": 8, "versao": 1, "no": "principal"}
+OK  Cliente volta ao principal automaticamente
+  cliente: {"ok": true, "sku": "TENIS-42", "saldo": 2, "versao": 2, "no": "principal"}
+OK  Venda aceita com a réplica parada
+OK  Réplica recupera a atualização perdida
+OK  Seis vendas concorrentes disputam dois pares: duas aceitas
+OK  Ambos convergem para saldo zero
+  cliente: {"ok": false, "erro": "Ambos os nós indisponíveis"}
+OK  Falha dos dois nós gera erro controlado
