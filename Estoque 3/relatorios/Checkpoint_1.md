@@ -1,9 +1,0 @@
-Amanda Maritan e Matheus Oliveira
-# Comunicação cliente-servidor
-Escolhemos como domínio o estoque de uma loja de calçados que vende por marketplace. Para manter o foco na comunicação, o sistema acompanha um único produto, o TENIS-42, que começa com 10 pares. O vendedor usa um cliente de terminal para consultar o saldo e registrar vendas. Cliente e servidor são programas Python separados, rodando em processos diferentes. O servidor escuta em 127.0.0.1, na porta TCP 7100, e cria uma thread para cada conexão recebida, então dois vendedores podem consultar ao mesmo tempo sem que um espere o outro.
-Usamos sockets TCP diretamente, sem framework. A cada comando, o cliente abre uma conexão, manda um objeto JSON em UTF-8 seguido de uma quebra de linha e espera a resposta no mesmo socket. Depois disso a conexão é fechada. A quebra de linha é necessária porque o TCP entrega um fluxo de bytes e não marca onde uma mensagem termina. Também limitamos cada mensagem a 8.192 bytes, e o cliente desiste se uma operação de rede passar de um segundo.
-Uma venda de dois pares, por exemplo, troca estas duas mensagens:
-> {"op":"vender","sku":"TENIS-42","quantidade":2}
-> {"ok":true,"sku":"TENIS-42","saldo":8,"versao":1,"no":"principal"}
-Para consultar, basta trocar op por consultar e não mandar quantidade. Se a operação for desconhecida, a quantidade não for positiva ou não houver pares suficientes, a resposta vem com ok igual a false e o motivo no campo erro.
-Saldo e versão ficam em um banco SQLite. A venda abre uma transação de escrita antes mesmo de ler o saldo, o que impede que duas vendas leiam o mesmo valor e as duas sejam aprovadas. Dentro dessa transação o saldo diminui e a versão sobe um. No teste deste checkpoint, dois clientes consultaram o servidor em paralelo e os dois receberam 10 pares. A saída completa dos testes está em testes/execucao.txt.
