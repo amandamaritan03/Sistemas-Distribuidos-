@@ -48,8 +48,7 @@ A consulta identifica a réplica. A escrita informa que falta confirmação. Rei
 ## Arquivos e preparação da entrega
 
 - checkpoint1/ e checkpoint2/ guardam os códigos independentes das etapas anteriores. codigo/ contém a versão final completa.
-- relatorios/ contém os três relatórios em PDF e seus textos editáveis em Markdown.
-- apresentacao/ contém os slides em PDF e o roteiro de 8min30.
+- relatorios/ contém os três relatórios em PDF.
+- apresentacao/ contém os slides em PDF.
 - testes/execucao.txt contém a saída da execução validada. Cada linha OK vem de uma verificação do resultado recebido.
-- Na autoavaliação, cada integrante registra o que executou, quais resultados observou e que decisão de arquitetura consegue justificar.
 - Os bancos manuais são separados por etapa e por papel no diretório de execução. Os serviços escutam em 127.0.0.1. O teste demonstra falha isolada de processo no mesmo computador.
